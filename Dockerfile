@@ -1,5 +1,5 @@
 # Stage 1: Build stage
-FROM rust:1.78-slim-bookworm AS builder
+FROM rust:slim-bookworm AS builder
 
 # Install C/C++ build dependencies required by librdkafka (C library used by rdkafka)
 RUN apt-get update && apt-get install -y \
@@ -19,7 +19,7 @@ COPY . .
 RUN cargo build --release --bin publisher && cargo build --release --bin consumer
 
 # Stage 2: Runtime stage
-FROM debian:bookworm-slim
+FROM rust:slim-bookworm
 
 # Install runtime SSL dependencies
 RUN apt-get update && apt-get install -y \
