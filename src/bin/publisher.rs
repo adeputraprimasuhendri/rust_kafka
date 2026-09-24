@@ -6,12 +6,7 @@ use tokio::time::sleep;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let bootstrap_servers = std::env::var("KAFKA_BOOTSTRAP_SERVERS")
-        .unwrap_or_else(|_| "192.168.100.79:9092".to_string());
-    let bootstrap_servers = bootstrap_servers
-        .trim_start_matches("http://")
-        .trim_start_matches("https://");
-
+    let bootstrap_servers = "192.168.100.79:9092".to_string();
     let producer: FutureProducer = ClientConfig::new()
         .set("bootstrap.servers", bootstrap_servers)
         .set("message.timeout.ms", "5000")
