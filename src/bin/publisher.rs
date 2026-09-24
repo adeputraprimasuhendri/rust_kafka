@@ -7,7 +7,7 @@ use tokio::time::sleep;
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let producer: FutureProducer = ClientConfig::new()
-        .set("bootstrap.servers", "localhost:9092")
+        .set("bootstrap.servers", "192.168.100.79:9092")
         .set("message.timeout.ms", "5000")
         .create()?;
 

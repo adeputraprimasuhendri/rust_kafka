@@ -5,7 +5,7 @@ use rdkafka::message::Message;
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let consumer: StreamConsumer = ClientConfig::new()
-        .set("bootstrap.servers", "localhost:9092")
+        .set("bootstrap.servers", "192.168.100.79:9092")
         .set("group.id", "random-number-group")
         .set("enable.auto.commit", "true")
         .set("auto.offset.reset", "latest")
