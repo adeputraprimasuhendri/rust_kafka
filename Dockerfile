@@ -1,5 +1,5 @@
 # Stage 1: Build stage
-FROM rust:1.80-slim as builder
+FROM rust:slim AS builder
 
 # Install C/C++ build dependencies required by librdkafka (C library used by rdkafka)
 RUN apt-get update && apt-get install -y \
