@@ -1,0 +1,20 @@
+services:
+# 2. Rust Publisher Container
+  rust-publisher:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rust-publisher
+    command: ["/app/publisher"]
+    environment:
+      - KAFKA_BOOTSTRAP_SERVERS=http://192.168.100.79:9092
+
+  # 3. Rust Consumer Container
+  rust-consumer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rust-consumer
+    command: ["/app/consumer"]
+    environment:
+      - KAFKA_BOOTSTRAP_SERVERS=http://192.168.100.79:9092
