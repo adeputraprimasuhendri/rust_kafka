@@ -4,8 +4,14 @@ use rdkafka::message::Message;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let bootstrap_servers = std::env::var("KAFKA_BOOTSTRAP_SERVERS")
+        .unwrap_or_else(|_| "localhost:9092".to_string());
+    let bootstrap_servers = bootstrap_servers
+        .trim_start_matches("http://")
+        .trim_start_matches("https://");
+
     let consumer: StreamConsumer = ClientConfig::new()
-        .set("bootstrap.servers", "192.168.100.79:9092")
+        .set("bootstrap.servers", bootstrap_servers)
         .set("group.id", "random-number-group")
         .set("enable.auto.commit", "true")
         .set("auto.offset.reset", "latest")
