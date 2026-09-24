@@ -1,21 +1,32 @@
 # Stage 1: Build stage
 FROM rust:1.80-slim as builder
 
-# Install libssl-dev and pkg-config required by rdkafka / librdkafka
+# Install libssl-dev, pkg-config, and cmake required by rdkafka / librdkafka
 RUN apt-get update && apt-get install -y \
     pkg-config \
     libssl-dev \
     build-essential \
+    cmake \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-# Copy dependency files first to cache dependencies
-COPY Cargo.toml Cargo.lock ./
-RUN mkdir src && echo "fn main() {}" > src/main.rs && cargo build --release && rm -rf src
+# Copy dependency definition
+COPY Cargo.toml ./
 
-# Copy actual source code
+# Create dummy source files for all expected targets to pre-compile dependencies
+RUN mkdir -p src/bin && \
+    echo "fn main() {}" > src/main.rs && \
+    echo "fn main() {}" > src/bin/publisher.rs && \
+    echo "fn main() {}" > src/bin/consumer.rs && \
+    cargo build --release && \
+    rm -rf src
+
+# Copy actual source code and Cargo.lock if present
 COPY . .
+
+# Touch the source files so Cargo knows to re-compile the actual code (not the dummy binaries)
+RUN touch src/bin/publisher.rs src/bin/consumer.rs
 
 # Build both binaries in release mode
 RUN cargo build --release --bin publisher && cargo build --release --bin consumer
