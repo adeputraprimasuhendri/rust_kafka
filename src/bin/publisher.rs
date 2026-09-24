@@ -7,7 +7,7 @@ use tokio::time::sleep;
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let bootstrap_servers = std::env::var("KAFKA_BOOTSTRAP_SERVERS")
-        .unwrap_or_else(|_| "localhost:9092".to_string());
+        .unwrap_or_else(|_| "192.168.100.79:9092".to_string());
     let bootstrap_servers = bootstrap_servers
         .trim_start_matches("http://")
         .trim_start_matches("https://");
